@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<title>Rookvrij — AZ Groeninge</title>
+<!-- © Mario Van Dam. Ontwerp, teksten en opbouw van deze app zijn auteursrechtelijk beschermd. Gebruik of nabouwen kan enkel met schriftelijke toestemming van de ontwerper. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#FBF7F1" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--creme:#FBF7F1;--oker:#F4A92D;--okerd:#5c0f2d;--bordeaux:#7E153E;--ink:#323232;--lijn:#EAE2D6;--grijs:#5b5b55;--grijs2:#6f6862}
+html,body{height:100%;margin:0;background:#EFEAE1;font-family:Figtree,system-ui,-apple-system,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+#app{width:100%;max-width:420px;height:100%;margin:0 auto;background:var(--creme);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.screen{display:none;flex:1;min-height:0;flex-direction:column}
+.screen.on{display:flex}
+.logo{display:block;width:auto;mix-blend-mode:multiply}
+h1{font:700 40px/1.04 Figtree,sans-serif;letter-spacing:-1.7px;margin:0}
+h2{font:700 28px/1.1 Figtree,sans-serif;letter-spacing:-1.1px;margin:0}
+p{margin:0;font:400 15px/1.6 Figtree,sans-serif;color:var(--grijs);text-wrap:pretty}
+button{font-family:inherit;cursor:pointer}
+.btn{width:100%;border:none;border-radius:14px;padding:18px;font:600 16.5px Figtree,sans-serif}
+.btn-oker{background:var(--oker);color:var(--okerd);font-weight:700}
+.btn-bord{background:var(--bordeaux);color:#fff}
+.pad{padding:24px}
+.scroll{overflow-y:auto}
+.stap{display:flex;gap:13px;align-items:baseline;background:#fff;border:1px solid var(--lijn);border-radius:16px;padding:15px 17px}
+.stap b{font:700 12px Figtree,sans-serif;color:var(--bordeaux);min-width:16px}
+.stap span{font:400 14px/1.5 Figtree,sans-serif;color:#33333a}
+.tbtns{display:flex;gap:8px}
+.tbtn{flex:1;border:1px solid var(--lijn);background:#fff;border-radius:13px;padding:14px 6px;font:600 13.5px Figtree,sans-serif;color:var(--grijs2)}
+.tbtn.sel{border:1.5px solid var(--oker);background:#FDF3E1;font-weight:700;color:var(--bordeaux)}
+.sbtn{flex:1;border:1px solid var(--lijn);background:#fff;border-radius:999px;padding:11px 6px;font:600 13px Figtree,sans-serif;color:var(--grijs2)}
+.sbtn.sel{border:1.5px solid var(--oker);background:#FDF3E1;font-weight:700;color:var(--bordeaux)}
+.kaart{background:#fff;border:1px solid var(--lijn);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:15px}
+label{display:flex;flex-direction:column;gap:7px}
+label span{font:600 12.5px Figtree,sans-serif;color:var(--ink)}
+label span i{font-style:normal;font-weight:400;color:var(--grijs2)}
+input{border:1px solid #E4DFD6;border-radius:11px;padding:12px 13px;font:400 15.5px Figtree,sans-serif;color:var(--ink);background:var(--creme);width:100%;-webkit-appearance:none}
+input:focus{outline:none;border-color:var(--ink);background:#fff}
+.hide{display:none!important}
+.kop{padding:20px 24px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex:none}
+.ring{position:relative;width:52px;height:52px;flex:none}
+.ring svg{width:52px;height:52px;transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 13px Figtree,sans-serif;color:var(--ink)}
+.geel{margin:18px 20px 0;background:var(--oker);border-radius:20px;padding:17px 21px 19px;flex:none}
+.geel .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dagl{font:700 15.5px Figtree,sans-serif;letter-spacing:.2px;color:var(--bordeaux);white-space:nowrap}
+.badge{background:var(--bordeaux);color:#fff;border-radius:999px;padding:5px 11px;flex:none;white-space:nowrap;font:700 9.5px Figtree,sans-serif;letter-spacing:.8px;text-transform:uppercase}
+.hair{height:1px;background:rgba(126,21,62,.22);margin:13px 0}
+.lbl{font:600 10.5px Figtree,sans-serif;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink)}
+.lbl-b{font:600 10.5px Figtree,sans-serif;letter-spacing:1.3px;text-transform:uppercase;color:var(--bordeaux)}
+.bedrag{font:800 42px/1 Figtree,sans-serif;letter-spacing:-.05em;color:var(--ink);margin-top:6px}
+.quote{font:600 24px/1.3 Figtree,sans-serif;letter-spacing:-.03em;color:var(--ink);text-wrap:pretty}
+.wet{font:400 13.5px/1.6 Figtree,sans-serif;color:var(--grijs);margin-top:8px;text-wrap:pretty}
+.onder{margin-top:auto;padding-top:20px;border-top:1px solid var(--lijn)}
+.bot{padding:0 24px 24px;flex:none}
+.help-bar{display:flex;align-items:baseline;justify-content:center;gap:8px;white-space:nowrap}
+.help-bar span{font:400 12.5px Figtree,sans-serif;opacity:.82;white-space:nowrap}
+.groot{font:800 88px/.9 Figtree,sans-serif;letter-spacing:-.07em;color:var(--bordeaux);margin-top:18px}
+.dagen-l{font:600 11px Figtree,sans-serif;letter-spacing:1.3px;text-transform:uppercase;color:var(--grijs2);margin-top:8px}
+.badge2{align-self:flex-start;border-radius:999px;padding:6px 13px;font:700 10px Figtree,sans-serif;letter-spacing:.9px;text-transform:uppercase;background:var(--oker);color:var(--okerd)}
+.badge2.mijl{background:var(--bordeaux);color:#fff}
+.totaal{background:var(--oker);border-radius:20px;padding:17px 21px;margin-top:22px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.totaal .b{font:800 27px/1 Figtree,sans-serif;letter-spacing:-.045em;color:var(--ink)}
+.mtekst{font:600 16px/1.45 Figtree,sans-serif;color:var(--ink);margin-top:20px;text-wrap:pretty}
+.rij-next{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:20px;padding:15px 17px;background:#fff;border:1px solid var(--lijn);border-radius:16px;text-align:left;width:100%}
+.rij-next b{display:block;font:600 14.5px Figtree,sans-serif;color:var(--ink);margin-top:4px}
+.pijl{font:400 17px Figtree,sans-serif;color:var(--bordeaux)}
+.sinds{font:400 12.5px Figtree,sans-serif;color:var(--grijs2);margin-top:auto;padding-top:18px}
+.terug{align-self:flex-start;background:none;border:none;padding:0;font:400 22px Figtree,sans-serif;color:var(--bordeaux)}
+.tl{position:relative;margin-top:18px}
+.tl .lijn{position:absolute;left:5px;top:8px;bottom:10px;width:2px;background:linear-gradient(var(--oker) 0 16%,#E4DFD6 16%)}
+.tl .rijen{display:flex;flex-direction:column;gap:12px}
+.tlr{display:flex;gap:13px;align-items:center}
+.dot{width:11px;height:11px;border-radius:50%;flex:none}
+.dot.vol{background:var(--oker)}
+.dot.open{border:2px solid #D9D2C6;background:var(--creme)}
+.tlr .in{flex:1;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.tlr .n{font:600 13.5px Figtree,sans-serif;color:var(--grijs)}
+.tlr.done .n{font-weight:700;color:var(--ink);font-size:14px}
+.tlr .e{font:600 12.5px Figtree,sans-serif;color:var(--bordeaux)}
+.tlnext{display:flex;gap:13px;align-items:stretch}
+.tlnext .col{width:11px;display:flex;justify-content:center;flex:none}
+.tlnext .col i{width:11px;height:11px;border-radius:50%;background:var(--bordeaux);margin-top:14px}
+.tlnext .kaartje{flex:1;background:var(--oker);border-radius:14px;padding:12px 15px;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.tlnext .kaartje b{font:700 15px Figtree,sans-serif;color:var(--okerd);display:block}
+.tlnext .kaartje s{font:400 11.5px Figtree,sans-serif;color:var(--okerd);text-decoration:none;display:block;margin-top:2px}
+.tlnext .kaartje em{font:700 14px Figtree,sans-serif;color:var(--okerd);font-style:normal}
+.verder{display:flex;align-items:center;gap:10px;margin-top:18px}
+.verder span{font:600 10.5px Figtree,sans-serif;letter-spacing:1.3px;text-transform:uppercase;color:var(--grijs2)}
+.verder i{flex:1;height:1px;background:var(--lijn)}
+.tegels{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+.tegel{border:1.5px dashed #DCD4C6;border-radius:13px;padding:10px 12px;display:flex;align-items:baseline;justify-content:space-between;gap:6px}
+.tegel b{font:700 13px Figtree,sans-serif;color:var(--grijs)}
+.tegel span{font:600 11.5px Figtree,sans-serif;color:var(--bordeaux)}
+.ov{position:fixed;inset:0;z-index:90;display:none;flex-direction:column;overflow-y:auto}
+.ov.on{display:flex}
+#help{background:var(--bordeaux);padding:30px 24px 24px}
+#help .inner{width:100%;max-width:420px;margin:0 auto;display:flex;flex-direction:column;flex:1}
+.crav{font:500 11px Figtree,sans-serif;letter-spacing:1.3px;text-transform:uppercase;color:var(--oker)}
+.cravt{font:600 32px/1.14 Figtree,sans-serif;letter-spacing:-1.1px;color:#fff;margin-top:10px}
+.timer{background:var(--oker);border-radius:20px;padding:19px 21px;margin-top:22px}
+.timer .row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.timer .t{font:800 46px/1 Figtree,sans-serif;letter-spacing:-.06em;color:var(--okerd);font-variant-numeric:tabular-nums}
+.timer .l{font:400 11px/1.4 Figtree,sans-serif;color:var(--okerd);text-align:right}
+.timer .bar{height:4px;background:rgba(92,15,45,.25);border-radius:2px;margin-top:14px;overflow:hidden}
+.timer .bar i{display:block;height:100%;background:var(--okerd);width:100%;transition:width 1s linear}
+.acties{display:flex;flex-direction:column;gap:9px;margin-top:18px}
+.actie{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);border-radius:15px;padding:14px 17px;display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;width:100%;text-decoration:none}
+.actie b{display:block;font:600 15px Figtree,sans-serif;color:#fff}
+.actie s{display:block;font:400 12px Figtree,sans-serif;color:rgba(255,255,255,.72);margin-top:2px;text-decoration:none}
+.actie .pijl{color:var(--oker)}
+.bset{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);border-radius:15px;padding:16px 17px;display:flex;flex-direction:column;gap:10px}
+.bset div{font:400 13px/1.55 Figtree,sans-serif;color:#fff}
+.bset input{border:none;background:rgba(255,255,255,.94)}
+.bset button{background:var(--oker);color:var(--okerd);border:none;border-radius:11px;padding:13px;font:600 14.5px Figtree,sans-serif}
+.tabak{font:400 12.5px/1.5 Figtree,sans-serif;color:rgba(255,255,255,.85);margin-bottom:12px}
+.tabak a{color:#fff;border-bottom:1px solid rgba(255,255,255,.55);text-decoration:none}
+.sluit{width:100%;background:#fff;color:var(--bordeaux);border:none;border-radius:14px;padding:17px;font:600 16px Figtree,sans-serif}
+#adem{background:var(--creme);align-items:center;justify-content:center;padding:34px 24px}
+#adem .bol{width:200px;height:200px;border-radius:50%;background:var(--oker);display:flex;align-items:center;justify-content:center;transition:transform 1s ease-in-out;transform:scale(.72)}
+#adem .bol span{font:800 54px Figtree,sans-serif;color:var(--okerd);letter-spacing:-2px;font-variant-numeric:tabular-nums}
+#adem .fase{font:600 23px Figtree,sans-serif;color:var(--bordeaux);margin-top:36px;letter-spacing:-.4px}
+#adem .ronde{font:600 11px Figtree,sans-serif;letter-spacing:1.3px;text-transform:uppercase;color:var(--grijs2);margin-top:9px}
+#adem button{margin-top:40px;border:1px solid #E3DACC;background:none;color:var(--bordeaux);border-radius:999px;padding:14px 28px;font:600 15px Figtree,sans-serif}
+</style>
+</head>
+<body>
+<div id="app">
+
+<div class="screen on" id="s-welkom">
+<div class="pad scroll" style="flex:1;display:flex;flex-direction:column">
+<img class="logo" src="logo.png" alt="AZ Groeninge" style="height:46px;align-self:flex-start" />
+<div style="margin-top:auto;flex:none">
+<h1>Klaar om te stoppen?</h1>
+<p style="margin-top:14px;font-size:15.5px">84 dagen. Dag per dag. Met een motivatiequote, wetenschappelijk bewijs en inzicht in wat je bespaart. Jij kan dit.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:9px;margin:24px 0 auto;flex:none">
+<div class="stap"><b>01</b><span>Elke dag één quote en één stuk wetenschap.</span></div>
+<div class="stap"><b>02</b><span>Je teller loopt mee met wat je niet meer uitgeeft.</span></div>
+<div class="stap"><b>03</b><span>Eén tik op Help! als je wil roken.</span></div>
+</div>
+<div style="flex:none">
+<button class="btn btn-oker" onclick="toon('s-enquete')">Ik start vandaag</button>
+<div style="font:400 11.5px Figtree,sans-serif;color:#6d655d;text-align:center;margin-top:13px">Rookstopbegeleiding · AZ Groeninge</div>
+<div style="font:400 10px/1.5 Figtree,sans-serif;color:#989083;text-align:center;margin-top:8px">© Mario Van Dam — gebruik of nabouwen enkel met schriftelijke toestemming</div>
+</div>
+</div>
+</div>
+
+<div class="screen" id="s-enquete">
+<div class="pad scroll" style="flex:1;display:flex;flex-direction:column;gap:0">
+<img class="logo" src="logo.png" alt="AZ Groeninge" style="height:36px;align-self:flex-start" />
+<h2 style="margin-top:20px">Wat rook je?</h2>
+<p style="margin-top:9px;font-size:13.5px">Zo berekenen we hoeveel je bespaart. Dit wordt nergens naartoe gestuurd — enkel op jouw gsm opgeslagen.</p>
+<div class="tbtns" style="margin-top:18px">
+<button class="tbtn" data-type="sigaretten" onclick="kiesType('sigaretten')">Sigaretten</button>
+<button class="tbtn" data-type="tabak" onclick="kiesType('tabak')">Tabak</button>
+<button class="tbtn" data-type="vape" onclick="kiesType('vape')">Vape</button>
+</div>
+<div class="kaart hide" id="v-sig" style="margin-top:14px">
+<label><span>Wat kost jouw pakje? <i>(in euro)</i></span><input id="i-prijs" type="number" inputmode="decimal" step="0.01" placeholder="Bv. 9.50" /></label>
+<label><span>Hoeveel sigaretten zitten in een pakje?</span><input id="i-aantal" type="number" inputmode="numeric" placeholder="Bv. 20" /></label>
+<label><span>Hoeveel sigaretten rook je per dag?</span><input id="i-perdag" type="number" inputmode="numeric" placeholder="Bv. 10" /></label>
+</div>
+<div class="kaart hide" id="v-tabak" style="margin-top:14px">
+<label><span>Wat kost jouw zakje + blaadjes + filters? <i>(in euro)</i></span><input id="i-tprijs" type="number" inputmode="decimal" step="0.01" placeholder="Bv. 18.00" /></label>
+<label><span>Hoeveel dagen doe je er gemiddeld mee?</span><input id="i-tdagen" type="number" inputmode="numeric" placeholder="Bv. 7" /></label>
+</div>
+<div class="kaart hide" id="v-vape" style="margin-top:14px">
+<div style="font:600 12.5px Figtree,sans-serif;color:#323232">Welk type vape gebruik je?</div>
+<div class="tbtns">
+<button class="sbtn" data-sub="herbruikbaar" onclick="kiesSub('herbruikbaar')">Herbruikbaar</button>
+<button class="sbtn" data-sub="wegwerp" onclick="kiesSub('wegwerp')">Wegwerp</button>
+</div>
+<label class="hide" id="vape-h"><span>Wat kost vapen je per week? <i>(vloeistof, coils)</i></span><input id="i-hweek" type="number" inputmode="decimal" step="0.01" placeholder="Bv. 14.00" /></label>
+<div class="hide" id="vape-w" style="display:none;flex-direction:column;gap:15px">
+<label><span>Wat kost jouw wegwerpvape?</span><input id="i-wprijs" type="number" inputmode="decimal" step="0.01" placeholder="Bv. 8.00" /></label>
+<label><span>Hoeveel dagen doe je ermee?</span><input id="i-wdagen" type="number" inputmode="numeric" placeholder="Bv. 3" /></label>
+</div>
+</div>
+<div class="kaart hide" id="v-buddy" style="margin-top:12px">
+<label><span>Wie is je buddy? <i>(iemand die je mag bellen)</i></span><input id="i-bnaam" type="text" placeholder="Bv. Lien" /></label>
+<label><span>Telefoonnummer van je buddy</span><input id="i-btel" type="tel" inputmode="tel" placeholder="Bv. 0470 12 34 56" /></label>
+<div style="font:400 12px/1.55 Figtree,sans-serif;color:#6f6862">Via Help! bel je hem of haar met één tik, of stuur je een bericht via WhatsApp.</div>
+</div>
+<button class="btn btn-bord hide" id="btn-start" style="margin-top:16px;flex:none" onclick="startTraject()">Start mijn 84 dagen</button>
+</div>
+</div>
+
+<div class="screen" id="s-dag">
+<div class="kop">
+<img class="logo" src="logo.png" alt="AZ Groeninge" style="height:46px" />
+<div class="ring">
+<svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="22.5" fill="none" stroke="#EFE7DA" stroke-width="5"></circle><circle id="d-ring" cx="26" cy="26" r="22.5" fill="none" stroke="#F4A92D" stroke-width="5" stroke-linecap="round" stroke-dasharray="141.4" stroke-dashoffset="141.4"></circle></svg>
+<b id="d-pct">0%</b>
+</div>
+</div>
+<div class="geel">
+<div class="top"><div class="dagl" id="d-label">Dag 1 van 84</div><div class="badge hide" id="d-badge">Mijlpaal</div></div>
+<div class="hair"></div>
+<div class="lbl">Bespaard</div>
+<div class="bedrag" id="d-bedrag">0,00€</div>
+</div>
+<div class="pad scroll" style="flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:18px">
+<div class="quote" id="d-quote"></div>
+<div class="onder"><div class="lbl-b">Wetenschap</div><div class="wet" id="d-wet"></div></div>
+</div>
+<div class="bot"><button class="btn btn-bord help-bar" onclick="openHelp()">Help!<span>als je wil roken</span></button></div>
+</div>
+
+<div class="screen" id="s-vrij">
+<div class="kop"><img class="logo" src="logo.png" alt="AZ Groeninge" style="height:46px" /></div>
+<div class="pad scroll" style="flex:1;min-height:0;display:flex;flex-direction:column">
+<div class="badge2" id="v-badge">84 dagen voltooid</div>
+<div class="groot" id="v-dagen">84</div>
+<div class="dagen-l">dagen rookvrij</div>
+<div class="totaal"><div class="lbl-b">Totaal bespaard</div><div class="b" id="v-bedrag">0,00€</div></div>
+<div class="mtekst hide" id="v-tekst"></div>
+<button class="rij-next" onclick="renderKomt()"><span><span class="lbl-b">Volgende mijlpaal</span><b id="v-next"></b></span><span class="pijl">→</span></button>
+<div class="sinds" id="v-sinds"></div>
+</div>
+<div class="bot"><button class="btn btn-bord help-bar" onclick="openHelp()">Help!<span>als je wil roken</span></button></div>
+</div>
+
+<div class="screen" id="s-komt">
+<div class="pad scroll" style="flex:1;display:flex;flex-direction:column;padding-top:20px">
+<button class="terug" onclick="route()">←</button>
+<h2 style="margin-top:16px;font-size:26px">Wat nog komt</h2>
+<div style="font:400 12.5px Figtree,sans-serif;color:#5b5b55;margin-top:7px" id="k-sub"></div>
+<div class="tl">
+<div class="lijn"></div>
+<div class="rijen">
+<div class="tlr done"><div class="dot vol"></div><div class="in"><div class="n" id="k-bnaam"></div><div class="e" id="k-bbedrag"></div></div></div>
+<div class="tlnext"><div class="col"><i></i></div><div class="kaartje"><div><b id="k-nnaam"></b><s id="k-nrest"></s></div><em id="k-nbedrag"></em></div></div>
+<div id="k-open" style="display:flex;flex-direction:column;gap:12px"></div>
+</div>
+</div>
+<div class="verder"><span>En verder</span><i></i></div>
+<div class="tegels" id="k-tegels"></div>
+</div>
+</div>
+
+</div>
+
+<div class="ov" id="help">
+<div class="inner">
+<div class="crav">Craving</div>
+<div class="cravt">Deze golf<br />gaat voorbij.</div>
+<div class="timer">
+<div class="row"><div class="t" id="h-klok">5:00</div><div class="l" id="h-klabel">zolang duurt<br />een craving</div></div>
+<div class="bar"><i id="h-bar"></i></div>
+</div>
+<div class="acties">
+<button class="actie" onclick="startAdem()"><span><b>Ademhalingsoefening</b><s>4 in · 7 vasthouden · 8 uit</s></span><span class="pijl">→</span></button>
+<div class="acties hide" id="h-buddy" style="margin-top:0">
+<a class="actie" id="h-bel" href="#"><span><b id="h-bellabel">Bel mijn buddy</b><s>Je buddy</s></span><span class="pijl">→</span></a>
+<a class="actie" id="h-wa" href="#" target="_blank" rel="noopener"><span><b>Stuur een WhatsApp</b><s>Je bericht staat al klaar</s></span><span class="pijl">→</span></a>
+</div>
+<div class="bset hide" id="h-bset">
+<div>Je hebt nog geen buddy. Vul in wie je mag bellen — dit blijft op je eigen gsm.</div>
+<input id="i-bsnaam" type="text" placeholder="Naam" />
+<input id="i-bstel" type="tel" inputmode="tel" placeholder="Telefoonnummer" />
+<button onclick="bewaarBuddy()">Bewaar mijn buddy</button>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:20px;flex:none">
+<div class="tabak">Blijft het te zwaar? Tabakstop helpt gratis: <a href="tel:080011100">0800 111 00</a></div>
+<button class="sluit" onclick="sluitHelp()">Het is voorbij</button>
+</div>
+</div>
+</div>
+
+<div class="ov" id="adem">
+<div class="bol" id="a-bol"><span id="a-tel">4</span></div>
+<div class="fase" id="a-fase">Adem in</div>
+<div class="ronde" id="a-ronde">Ronde 1 van 4</div>
+<button onclick="stopAdem()">Stoppen</button>
+</div>
+
+<script>
+// Teksten en mijlpalen — ongewijzigd overgenomen uit de bestaande app.
+const QUOTES = [
+"Dag één. Het moedigste wat je vandaag doet, is beginnen — al de rest bouwt daarop verder.",
+"Twee dagen. De eerste uren waren het lastigst; wat je nu voelt, is je lichaam dat aan het opruimen is.",
+"Dag drie is voor veel mensen de zwaarste. Kom je vandaag door, dan ben je door het diepste punt van de ontwenning.",
+"Een craving duurt zelden langer dan vijf minuten. Vijf minuten uitzitten is iets wat je vandaag meerdere keren kunt.",
+"Vijf dagen. Je longen ademen al makkelijker dan je denkt, ook al voelt het nog niet zo.",
+"Cravings komen in golven: ze bouwen op, ze breken, ze zakken weg. Jij hoeft alleen te blijven staan tot de golf voorbij is.",
+"WEEK 1 VOLTOOID. Zeven dagen lang elke dag opnieuw kiezen — dat is geen geluk, dat is karakter.",
+"Week twee. Het lichamelijke deel van de ontwenning ligt grotendeels achter je; nu leert je hoofd het af.",
+"Denk niet aan alle dagen die nog komen. Denk aan vandaag, en laat morgen morgen zijn.",
+"Tien dagen rookvrij. Dat is geen toeval — dat is tien keer dezelfde beslissing, door jou genomen.",
+"Je smaak en je reuk worden scherper. Koffie, brood, buitenlucht: de wereld geeft je iets terug.",
+"Twaalf dagen die niemand je nog kan afnemen. Wat er ook gebeurt, deze staan op jouw naam.",
+"Als het vandaag zwaar voelt: dat betekent niet dat je zwak bent. Het betekent dat je iets moeilijks doet.",
+"TWEE WEKEN. Kijk eens hoe ver je bent — je longen, je hart en je hoofd zijn je alle drie aan het inhalen.",
+"Week drie. De gewoonte verliest haar grip: minder momenten waarop je hand er automatisch naartoe gaat.",
+"Elke dag zonder sigaret is een dag waarop je iets voor jezelf koos. Zestien keer al.",
+"Zeventien dagen. De eerste twee weken zijn waar de meeste stoppogingen sneuvelen. Jij bent er voorbij.",
+"Je slaapt beter, je ademt beter, je ruikt beter. Merk je het al, of moeten anderen het je zeggen?",
+"Negentien dagen. Je bent geen roker die gestopt is — je bent iemand die niet rookt.",
+"Twintig dagen. Wie had dat gedacht op dag drie? Jij eigenlijk wel, ergens.",
+"DRIE WEKEN. Drie weken dezelfde keuze maken verandert hoe die keuze aanvoelt: minder strijd, meer gewoonte.",
+"Week vier begint. Bijna een maand — en een maand is iets wat je aan mensen vertelt.",
+"De zin in een sigaret neemt af. Misschien niet vandaag, maar de lijn gaat naar beneden.",
+"Vierentwintig dagen sterker dan de dag dat je begon. Dat is de enige vergelijking die telt.",
+"Als deze dag moeilijk is, vraag je dan af wat je toekomst hieraan overhoudt. Zij houdt er het meeste aan over.",
+"Je huid, je haar, je energie — ze veranderen van binnenuit, ook op de dagen dat je het zelf niet ziet.",
+"Zevenentwintig dagen. Morgen sluit je vier volle weken af. Vandaag is de laatste stap daarnaartoe.",
+"VIER WEKEN VOLTOOID. Een maand geleden was dit een plan; vandaag is het iets wat je gewoon doet.",
+"Week vijf. Bijna iedereen die hier komt zegt hetzelfde: vanaf hier wordt het lichter.",
+"Dertig dagen. Dertig keer nee gezegd tegen de sigaret, en dertig keer ja tegen jezelf.",
+"Je bloeddruk daalt, je hart werkt rustiger. Het werk dat je niet ziet, levert het meeste op.",
+"Tweeëndertig dagen. De gewoonte is gebroken; wat overblijft is de vrijheid die je ervoor terugkrijgt.",
+"Een moeilijk moment? Adem in, tel tot drie, adem uit. Je doet dit al drieëndertig dagen — dit moment ook.",
+"Je bent op dit vlak sterker dan de meeste mensen ooit worden. Dat is geen overdrijving.",
+"VIJF WEKEN. Vijf weken geleden was stoppen een voornemen. Nu is het gewoon hoe je dag eruitziet.",
+"Zes weken komt in zicht. Ongeveer daar worden cravings zeldzaam in plaats van dagelijks.",
+"Je neus ruikt weer bloemen, regen, eten dat staat te pruttelen. Welkom terug.",
+"Elke dag zonder sigaret is een dag die je van je toekomst terugwint. Achtendertig al.",
+"De verslaving roept nog af en toe. Het verschil is dat jij niet meer opneemt.",
+"Veertig dagen. Geen enkele daarvan ging vanzelf, en precies daarom betekenen ze iets.",
+"Eenenveertig dagen. Je bent iemand aan het worden die niet rookt — en dat is bijna klaar.",
+"ZES WEKEN. De helft van de challenge staat op jouw naam. De tweede helft is meestal de makkelijkste.",
+"Drieënveertig dagen. Krijg je al te horen dat je er beter uitziet? Anderen zien het vaak eerder dan jij.",
+"Je longcapaciteit groeit. Trappen, fietsen, een bus halen — alles vraagt een beetje minder van je.",
+"Vijfenveertig dagen. Voorbij de helft, en nog niet moe. Dat zegt genoeg over hoe dit gaat aflopen.",
+"Zesenveertig dagen. Je hoeft er niet meer tegen te vechten; je doet het gewoon niet meer.",
+"Denk je vandaag aan een sigaret? Dat is een herinnering die langskomt, geen behoefte die je moet volgen.",
+"Achtenveertig dagen. Bijna zeven weken lang, elke dag, de juiste keuze gemaakt.",
+"ZEVEN WEKEN. Negenenveertig dagen uit één beslissing — die je negenenveertig keer opnieuw nam.",
+"Vijftig dagen. Vijftig keer wakker geworden als iemand die kiest voor zijn gezondheid.",
+"Je risico op een hartaanval is al gedaald. Je hart doet zijn werk nu voor jou, niet tegen de rook in.",
+"Tweeënvijftig dagen. Bijna twee maanden. Dat vraagt karakter — en dat heb je nu zwart op wit.",
+"Je hoeft dit niet perfect te doen. Je hoeft het alleen maar vol te houden, en dat doe je.",
+"Vierenvijftig dagen. Elke dag maakt de ruimte tussen jou en de sigaret een beetje groter.",
+"Vijfenvijftig dagen. Je lichaam repareert zichzelf, en jij laat het zijn werk doen.",
+"ACHT WEKEN. Dit is geen detail in je leven meer — dit is een hoofdstuk waar je later naar terugkijkt.",
+"Zevenenvijftig dagen. De cravings worden zeldzamer, de rust neemt toe. Zo hoort het te gaan.",
+"Je huid is helderder, je ogen glinsteren meer. Anderen zien het — misschien zeggen ze het niet.",
+"Negenenvijftig dagen. Morgen is zestig, maar vandaag is het enige dat je hoeft te doen.",
+"Zestig dagen. Twee maanden vol kracht. Kijk eens terug naar dag één: hoe ver ben je gekomen?",
+"Eenenzestig dagen. Je bent voorbij het punt waarop de meeste mensen opnieuw beginnen.",
+"Tweeënzestig dagen. Morgen sluit je negen weken af. Vandaag telt nog altijd het meest.",
+"NEGEN WEKEN. Negen weken van ademhalen, van herstellen, van gewoon leven zonder sigaret.",
+"Vierenzestig dagen. Je longblaasjes herstellen; elke ademhaling gaat er iets frisser in.",
+"Vijfenzestig dagen. Rook jij nog? Nee. Ben jij een niet-roker? Ja. Zo simpel is het geworden.",
+"Zesenzestig dagen. De gewoonte bestaat niet meer — alleen de herinnering aan de gewoonte.",
+"Zevenenzestig dagen. Meer dan twee maanden bewijs dat jij het voor het zeggen hebt.",
+"Achtenzestig dagen. Denk eens aan wat je dit jaar nog kunt doen met de energie die terugkomt.",
+"Negenenzestig dagen. Je hoeft vandaag niets te presteren. Alleen niet roken, en dat lukt.",
+"TIEN WEKEN — 70 DAGEN. Zeventig dagen van jouw wil, jouw keuze en jouw volhouden.",
+"Eenenzeventig dagen. Voor elk jaar dat je rookvrij blijft, daalt je risico op kanker verder.",
+"Tweeënzeventig dagen. Bijna drie maanden. Drie maanden geleden leek dat ver weg.",
+"Drieënzeventig dagen. Nog elf keer opstaan en dezelfde keuze maken. Elf keer, dat is niets.",
+"Vierenzeventig dagen. Jij telt niet af naar het einde — jij telt op naar wat je opbouwt.",
+"Vijfenzeventig dagen. Negen dagen tot dag 84, en daarna gewoon door zoals je nu doet.",
+"Zesenzeventig dagen. Je ziet de finish, maar eigenlijk is er geen finish: alleen een nieuw begin.",
+"ELF WEKEN. Nog één week en de volledige challenge staat op jouw naam.",
+"Achtenzeventig dagen. Laatste rechte lijn — en onthoud: dit stopt niet op dag 84.",
+"Negenenzeventig dagen. Nog vijf te gaan. Je doet dit al negenenzeventig dagen; vijf lukt ook.",
+"Tachtig dagen. Tachtig keer voor jezelf gekozen. Zo ziet zorg voor jezelf eruit in de praktijk.",
+"Eenentachtig dagen. Nog drie. Maar vandaag is nog altijd de enige dag die je moet doen.",
+"Tweeëntachtig dagen. Je bent voor iemand in je omgeving een voorbeeld, ook al weet je het niet.",
+"Drieëntachtig dagen. Morgen is de grote dag. Vandaag ben je al wie je wilde worden.",
+"DAG 84. Vierentachtig dagen rookvrij. Dit is geen eindpunt — dit is wie jij nu bent."
+];
+
+const WETENSCHAP = [
+"Na 20 minuten dalen je hartslag en je bloeddruk al. Je bloedvaten ontspannen en je handen en voeten worden warmer.",
+"De koolstofmonoxide is uit je bloed verdwenen. Je rode bloedcellen kunnen weer volop zuurstof vervoeren.",
+"De nicotine is uit je lichaam. De ontwenning piekt vandaag of morgen — daarna wordt ze elke dag milder.",
+"Je luchtwegen ontspannen. De spiertjes rond de bronchiën staan minder onder spanning, waardoor ademen lichter aanvoelt.",
+"De trilhaartjes in je luchtwegen komen weer op gang. Tabaksrook verlamt die haartjes; zonder rook nemen ze hun schoonmaakwerk weer op.",
+"Je smaakpapillen worden gevoeliger. De cellen erin vernieuwen zich voortdurend; zonder rook die ze aantast, doen ze hun werk weer.",
+"Wie de eerste week doorkomt, heeft veel meer kans om definitief te stoppen. Deze week is de belangrijkste van je hele stoppoging.",
+"Je reukzin komt terug. Het zenuwweefsel in je neusslijmvlies, aangetast door tabaksrook, begint te herstellen.",
+"Je luchtwegen ruimen weer beter op. Herstellende trilhaartjes en minder slijm maken je minder gevoelig voor infecties.",
+"In je hersenen daalt het aantal nicotinereceptoren dat door jaren roken was toegenomen. Je beloningssysteem herijkt zich.",
+"Je bloed wordt minder plakkerig. Roken maakt bloedplaatjes kleveriger; na één tot twee weken zonder rook keert dat naar normaal.",
+"De doorbloeding van je tandvlees verbetert merkbaar. Nicotine vernauwt de bloedvaten in je mond; die vernauwing is nu weg.",
+"Je huid krijgt meer zuurstof. De kleinste bloedvaatjes herstellen, huidcellen worden beter gevoed en je teint wordt helderder.",
+"Na twee weken begint je risico op een hartinfarct te dalen. Je bloedvaten zijn soepeler, je bloeddruk stabieler, je hartritme regelmatiger.",
+"Je ademt dieper. De kleine luchtwegen zwellen af en de chronische ontsteking begint af te nemen.",
+"De productie van overtollig slijm in je luchtwegen daalt. Rokers maken structureel meer slijm aan als beschermingsmechanisme.",
+"Je immuuncellen in de longen worden actiever. Deze afweercellen waren door tabaksrook verzwakt.",
+"Je energieniveau stijgt door een betere zuurstofopname. Elke cel in je lichaam krijgt meer brandstof.",
+"Het risico op een herseninfarct begint te dalen. Roken is een van de grootste risicofactoren voor een beroerte.",
+"Je kransslagaders zijn soepeler geworden. De endotheelcellen die de binnenwand vormen, herstellen hun functie.",
+"Je hersenen wennen aan een leven zonder nicotine. Prikkels die vroeger automatisch tot roken leidden, verliezen geleidelijk hun kracht.",
+"De chronische ontsteking in je longen neemt verder af. Elasticiteit die door roken verloren ging komt niet terug — maar de achteruitgang stopt.",
+"Roken verstoort je insulinehuishouding en verhoogt het risico op diabetes type 2. Dat risico daalt na de rookstop — al kan het eerst tijdelijk stijgen als je wat bijkomt.",
+"Hoest je meer dan vroeger? Dat is geen achteruitgang: je longen voeren opgehoopt slijm en vuil af.",
+"Je stresshormonen normaliseren. Roken verhoogt je cortisolniveau, ook al voelt een sigaret ontspannend aan.",
+"De doorbloeding van je vingers en tenen is duidelijk verbeterd. Het risico op vaatvernauwing in de benen daalt.",
+"Je nieren werken efficiënter. Tabaksrook beschadigt de kleine bloedvaatjes in de nieren; die belasting is nu weg.",
+"Na vier weken is je longfunctie meetbaar beter. Bij veel ex-rokers verbetert ze in de eerste maanden met enkele procenten.",
+"Je maagwand herstelt zich. Roken zwakt de beschermlaag van je slijmvlies af en vertraagt de genezing van maagzweren; die rem valt nu weg.",
+"Je chronische lichte ontsteking neemt af: het aantal witte bloedcellen begint te dalen. Helemaal op het niveau van een niet-roker komen duurt maanden tot jaren.",
+"Je ogen profiteren mee. De doorbloeding van het netvlies verbetert en het risico op maculadegeneratie daalt.",
+"Je botten profiteren op termijn. Roken verlaagt de botdichtheid; na de rookstop vertraagt dat verlies en daalt je risico op botbreuken jaar na jaar.",
+"De grijze stof in je hersenen blijft beter bewaard. Roken versnelt het verlies van grijze stof; stoppen remt dat af.",
+"Je vruchtbaarheid verbetert. Roken beschadigt het DNA in zaad- en eicellen; een volledige nieuwe cyclus zaadcellen duurt ongeveer drie maanden.",
+"Onderzoek toont dat het aantal nicotinereceptoren in de hersenen na vier tot twaalf weken terugkeert naar het niveau van een niet-roker.",
+"Je lever werkt efficiënter. De belasting van het afbreken van giftige tabaksstoffen is sterk verminderd.",
+"De slijmvliezen van je luchtwegen zijn dunner en gezonder. De overmatige slijmlaag is grotendeels verdwenen.",
+"Je huid produceert meer collageen. Roken remt de collageenaanmaak — een van de redenen waarom rokers sneller rimpels krijgen.",
+"De kleine zenuwvezels in je handen en voeten herstellen. Met een betere doorbloeding gaat het gevoel erop vooruit.",
+"Je lichaam hoeft geen duizenden chemische stoffen meer af te breken. Zoveel zitten er in de rook van één sigaret.",
+"De slijmvliezen van je mond en keel herstellen. Het risico op mond- en keelkanker daalt geleidelijk over de jaren die volgen.",
+"Na zes weken zijn cravings bij de meeste ex-rokers duidelijk minder sterk en minder frequent dan in de eerste weken.",
+"Sporten gaat vlotter. Met meer zuurstof in je bloed en minder vernauwde luchtwegen stijgt je uithoudingsvermogen zichtbaar.",
+"De trilhaartjes in je bronchiën werken weer zoals het hoort. Ze duwen slijm en vuil naar boven in plaats van het te laten liggen.",
+"Je risico op diepveneuze trombose daalt. Roken maakt het bloed dikker en bevordert stolselvorming in de aderen.",
+"Je hartspier is sterker. De chronische zuurstofbeperking door koolstofmonoxide is opgeheven — het hart pompt efficiënter.",
+"De neurotransmitterbalans in je hersenen herstelt. Dopamine, serotonine en noradrenaline vinden hun basisniveaus terug.",
+"Je eetlust en spijsvertering stabiliseren. Nicotine onderdrukte je eetlust; zonder nicotine vindt je lichaam zijn eigen ritme terug.",
+"Het slijmvlies van je luchtwegen vernieuwt zich voortdurend. Na zeven weken bestaat het grotendeels uit cellen die nooit rook hebben gezien.",
+"Je zenuwstelsel is stabieler. De onrust en concentratieproblemen van de eerste weken zijn voor de meeste ex-rokers verdwenen.",
+"Je risico op een tweede hartaanval daalt sterk. Rookstop is het krachtigste preventieve middel na een hartinfarct.",
+"De kleinste bloedvaten in je huid werken beter, dus je huid krijgt meer zuurstof en voeding. De schade van jaren roken verdwijnt niet, maar er komt niets meer bij.",
+"Je immuunsysteem is aanzienlijk sterker. Natuurlijke killercellen — die virussen en kankercellen bestrijden — zijn actiever.",
+"Emfyseem is blijvende schade aan longweefsel. Roken versnelt die afbraak; na de rookstop zakt het tempo terug naar wat normaal is voor je leeftijd.",
+"Je tandvlees herstelt. Na slechte mondhygiëne is roken de grootste oorzaak van parodontitis; na de rookstop reageert je tandvlees weer normaal op behandeling.",
+"Na twee maanden rapporteren ex-rokers minder hoesten, minder slijm en minder kortademigheid. Bij chronische bronchitis is dat het duidelijkst.",
+"Je smaak is terug op niveau. Eten en drinken smaken intenser dan je je van de laatste jaren herinnert.",
+"De lymfeklieren in je longen worden minder belast. Ze hoeven geen nieuwe roetdeeltjes meer op te ruimen.",
+"Er binden geen nieuwe schadelijke stoffen meer aan je DNA. Je natuurlijke herstelmechanismen kunnen eindelijk bijbenen.",
+"Het risico op longontsteking daalt. Je luchtwegen ruimen ziekteverwekkers nu efficiënt op voor ze schade doen.",
+"Je hart klopt rustiger, ook in rust. Rokers hebben gemiddeld een hogere rusthartslag; die daalt na de rookstop.",
+"Je spijsvertering is rustiger. Roken verhoogt de kans op reflux en maagzweren; die extra prikkel is weg.",
+"Onderzoek toont dat de hersenreactie op rookprikkels — een asbak, een terras — na enkele maanden duidelijk zwakker wordt.",
+"Je wondgenezing is aanzienlijk verbeterd. Roken vertraagt genezing door minder zuurstoftoevoer en remming van collageenvorming.",
+"Je risico op hart- en vaatziekten daalt vanaf dag één en blijft dalen. Na ongeveer een jaar is het gehalveerd tegenover blijven roken.",
+"Je schildklier werkt beter. Thiocyanaat uit tabaksrook remt de jodiumopname; die rem is nu weg.",
+"Je nierfunctie verbetert. Roken versnelt de achteruitgang van de nierfiltratie; stoppen remt die achteruitgang af.",
+"Roken verhoogt het risico op boezemfibrilleren, een onregelmatige hartslag. Dat risico daalt na de rookstop.",
+"Je hormoonhuishouding komt in balans. Roken beïnvloedt onder andere je stresshormonen, je schildklier en je geslachtshormonen.",
+"Je risico op een beroerte daalt gestaag. Afhankelijk van hoeveel en hoelang je rookte, benadert het na enkele jaren dat van een niet-roker.",
+"Je stembanden en je keel zijn minder geïrriteerd. Een schrapende stem en een droge keel horen bij roken, niet bij jou.",
+"De slijmvliescellen van de baarmoederhals en de blaas herstellen zich. Roken verhoogt het kankerrisico op beide plekken.",
+"De zenuwuiteinden in je vingertoppen zijn gevoeliger. Doorbloeding en gevoel in handen en voeten gaan er verder op vooruit.",
+"Je slaapkwaliteit is beter. Nicotine verstoorde je slaapcyclus — nu is je slaap dieper en herstellender.",
+"Roken verhoogt het risico op grauwe staar aanzienlijk. Door te stoppen neemt de oxidatieve belasting van je ooglens af.",
+"Roken is een van de belangrijkste risicofactoren voor pancreaskanker. Na de rookstop daalt dat risico jaar na jaar.",
+"Je cholesterolbalans verbetert. Na de rookstop stijgt het HDL — het beschermende cholesterol — meetbaar.",
+"Rokers maken minder antistoffen aan na een vaccinatie, bijvoorbeeld tegen griep of hepatitis B. Na de rookstop herstelt die afweerreactie stap voor stap.",
+"Je luchtwegen vernieuwen zich cel per cel. Na bijna drie maanden bestaat het epitheel grotendeels uit nieuwe, gezonde cellen.",
+"Je bloedvaten gedragen zich weer als die van iemand die niet rookt. De endotheelfunctie herstelt in de maanden na de rookstop.",
+"Je longen zijn minder gevoelig voor prikkels. Koude lucht, inspanning en rook lokken minder snel hoesten of kortademigheid uit.",
+"Je hersenen krimpen langzamer. Roken versnelt het verlies van hersenvolume; na de rookstop keert dat tempo naar normaal.",
+"Roken verandert hoe je genen worden aan- en uitgezet. Na de rookstop keren veel van die veranderingen over de jaren terug naar normaal.",
+"Twaalf weken rookvrij. Je longfunctie is meetbaar beter, je hart- en vaatrisico daalt elk jaar verder, en het risico op de vele kankersoorten die met roken samenhangen wordt jaar na jaar kleiner. Dit is geen eindpunt — dit is je nieuwe basislijn."
+];
+
+const MIJLPALEN = [7,14,21,28,35,42,49,56,63,70,77,84];
+
+const NA_MIJLPALEN = [
+  {d:100,l:'100 dagen',t:'Honderd dagen. Drie cijfers op je teller, en geen enkel daarvan was toeval.'},
+  {d:150,l:'150 dagen',t:'Honderdvijftig dagen. Niet roken is geen gewoonte die je doorbreekt meer — het is iets dat je gewoon niet doet.'},
+  {d:183,l:'6 maanden',t:'Een half jaar rookvrij. Je hoest minder, je ademt dieper, en je bent er nauwelijks nog mee bezig.'},
+  {d:200,l:'200 dagen',t:'Tweehonderd dagen. Kijk eens wat er op je teller staat — dat is een reis, een fiets, een maand huur.'},
+  {d:250,l:'250 dagen',t:'Tweehonderdvijftig dagen. Je bent al langer gestopt dan de meeste mensen ooit volhouden.'},
+  {d:300,l:'300 dagen',t:'Driehonderd dagen. Nog vijfenzestig nachten en je zegt: ik rook al een jaar niet meer.'},
+  {d:350,l:'350 dagen',t:'Driehonderdvijftig dagen. Het jaar is bijna rond. En vandaag telt nog altijd het meest.'},
+  {d:365,l:'1 jaar',t:'Eén jaar rookvrij. Je risico op hart- en vaatziekten is ongeveer gehalveerd tegenover blijven roken.'},
+  {d:400,l:'400 dagen',t:'Vierhonderd dagen. Je longen ruimen op, je bloedvaten zijn soepeler, je slaapt beter.'},
+  {d:450,l:'450 dagen',t:'Vierhonderdvijftig dagen. Vraag je je nog af of je het volhoudt? Kijk naar het getal hierboven.'},
+  {d:500,l:'500 dagen',t:'Vijfhonderd dagen. Een half duizend keer wakker geworden als iemand die niet rookt.'},
+  {d:550,l:'550 dagen',t:'Vijfhonderdvijftig dagen. Je smaak, je reuk, je uithouding — alles heeft de tijd gekregen om terug te komen.'},
+  {d:600,l:'600 dagen',t:'Zeshonderd dagen. Er zijn mensen in je leven die je nooit hebben zien roken.'},
+  {d:650,l:'650 dagen',t:'Zeshonderdvijftig dagen. De sigaret is een herinnering geworden, geen keuze meer.'},
+  {d:700,l:'700 dagen',t:'Zevenhonderd dagen. Nog dertig dagen tot twee jaar.'},
+  {d:730,l:'2 jaar',t:'Twee jaar rookvrij. Je risico op een hartinfarct ligt al veel dichter bij dat van een niet-roker.'},
+  {d:750,l:'750 dagen',t:'Zevenhonderdvijftig dagen. Je hebt meer dagen zonder achter je dan de meeste stoppers ooit halen.'},
+  {d:800,l:'800 dagen',t:'Achthonderd dagen. Tel eens uit wat je hebt uitgespaard — en wat je ermee gedaan hebt.'},
+  {d:850,l:'850 dagen',t:'Achthonderdvijftig dagen. Je lichaam is lang klaar met afkicken. Dit is gewoon wie je bent.'},
+  {d:900,l:'900 dagen',t:'Negenhonderd dagen. Nog honderd te gaan tot vier cijfers.'},
+  {d:950,l:'950 dagen',t:'Negenhonderdvijftig dagen. Bijna duizend. Wie had dat gedacht op dag drie?'},
+  {d:1000,l:'1000 dagen',t:'Duizend dagen rookvrij. Duizend keer dezelfde keuze — en ze kost je niets meer.'},
+  {d:1095,l:'3 jaar',t:'Drie jaar. Je longfunctie gaat weer achteruit in het trage tempo van iemand die nooit rookte.'},
+  {d:1461,l:'4 jaar',t:'Vier jaar rookvrij. Je risico op een beroerte daalt elk jaar verder.'},
+  {d:1826,l:'5 jaar',t:'Vijf jaar. Je risico op mond-, keel- en slokdarmkanker is ongeveer gehalveerd tegenover blijven roken.'},
+  {d:2192,l:'6 jaar',t:'Zes jaar. Elk jaar dat erbij komt, brengt je verder van waar je begon.'},
+  {d:2557,l:'7 jaar',t:'Zeven jaar rookvrij. Ook je risico op blaas- en nierkanker is duidelijk lager dan toen je stopte.'},
+  {d:2922,l:'8 jaar',t:'Acht jaar. Je kans op longontsteking en chronische bronchitis blijft dalen.'},
+  {d:3287,l:'9 jaar',t:'Negen jaar. Nog één jaar tot een van de grootste mijlpalen.'},
+  {d:3653,l:'10 jaar',t:'Tien jaar rookvrij. Je risico op longkanker is ongeveer gehalveerd tegenover blijven roken.'},
+  {d:4383,l:'12 jaar',t:'Twaalf jaar. Je huid, je hart en je longen hebben alle tijd gekregen die ze nodig hadden.'},
+  {d:5479,l:'15 jaar',t:'Vijftien jaar rookvrij. Je risico op hart- en vaatziekten is dat van iemand die nooit gerookt heeft.'},
+  {d:7305,l:'20 jaar',t:'Twintig jaar. Voor bijna elk risico dat met roken samenhangt sta je waar iemand staat die nooit begon.'}
+];
+
+
+var DEMO = new URLSearchParams(location.search);
+var DEMO_DAG = parseInt(DEMO.get('dag') || '0', 10);
+var JAREN = ['1 jaar','2 jaar','3 jaar','4 jaar','5 jaar','10 jaar','15 jaar','20 jaar'];
+var S = { type:'', sub:'' };
+function q(id){ return document.getElementById(id); }
+function euro(n){ return n.toLocaleString('nl-BE',{minimumFractionDigits:2,maximumFractionDigits:2}) + '\u20ac'; }
+function num(v){ return parseFloat(String(v).replace(',','.')) || 0; }
+function ppd(){ return parseFloat(localStorage.getItem('azg_ppd') || '0'); }
+function startISO(){ return localStorage.getItem('azg_start'); }
+function dag(){
+  if (DEMO_DAG > 0) return DEMO_DAG;
+  var s = startISO(); if (!s) return 1;
+  return Math.max(1, Math.floor((Date.now() - new Date(s)) / 86400000) + 1);
+}
+function toon(id){
+  var els = document.querySelectorAll('.screen');
+  for (var i=0;i<els.length;i++) els[i].classList.remove('on');
+  q(id).classList.add('on');
+}
+function kiesType(t){
+  S.type = t;
+  var b = document.querySelectorAll('.tbtn');
+  for (var i=0;i<b.length;i++) b[i].classList.toggle('sel', b[i].dataset.type === t);
+  q('v-sig').classList.toggle('hide', t !== 'sigaretten');
+  q('v-tabak').classList.toggle('hide', t !== 'tabak');
+  q('v-vape').classList.toggle('hide', t !== 'vape');
+  q('v-buddy').classList.remove('hide');
+  q('btn-start').classList.remove('hide');
+}
+function kiesSub(s){
+  S.sub = s;
+  var b = document.querySelectorAll('.sbtn');
+  for (var i=0;i<b.length;i++) b[i].classList.toggle('sel', b[i].dataset.sub === s);
+  q('vape-h').classList.toggle('hide', s !== 'herbruikbaar');
+  q('vape-w').classList.toggle('hide', s !== 'wegwerp');
+}
+function bereken(){
+  if (S.type === 'sigaretten'){
+    var per = num(q('i-aantal').value) || 20;
+    return per > 0 ? (num(q('i-prijs').value) / per) * num(q('i-perdag').value) : 0;
+  }
+  if (S.type === 'tabak') return num(q('i-tprijs').value) / (num(q('i-tdagen').value) || 1);
+  if (S.type === 'vape'){
+    if (S.sub === 'wegwerp') return num(q('i-wprijs').value) / (num(q('i-wdagen').value) || 1);
+    return num(q('i-hweek').value) / 7;
+  }
+  return 0;
+}
+function startTraject(){
+  localStorage.setItem('azg_ppd', bereken().toFixed(4));
+  localStorage.setItem('azg_start', new Date().toISOString());
+  var n = q('i-bnaam').value.trim(), t = q('i-btel').value.trim();
+  if (n) localStorage.setItem('azg_buddy_naam', n);
+  if (t) localStorage.setItem('azg_buddy_tel', t);
+  route();
+}
+function route(){
+  if (!startISO() && DEMO_DAG === 0) { toon('s-welkom'); return; }
+  if (dag() <= 84) renderDag(); else renderVrij();
+}
+function renderDag(){
+  var d = Math.min(dag(), 84), p = ppd();
+  q('d-label').textContent = 'Dag ' + d + ' van 84';
+  q('d-badge').classList.toggle('hide', MIJLPALEN.indexOf(d) < 0);
+  q('d-bedrag').textContent = euro(d * p);
+  q('d-quote').textContent = QUOTES[d-1] || '';
+  q('d-wet').textContent = WETENSCHAP[d-1] || '';
+  q('d-pct').textContent = Math.round(d/84*100) + '%';
+  q('d-ring').setAttribute('stroke-dashoffset', (141.4 * (1 - d/84)).toFixed(1));
+  toon('s-dag');
+}
+function renderVrij(){
+  var d = dag(), p = ppd();
+  var hit = null, next = null, i;
+  for (i=0;i<NA_MIJLPALEN.length;i++){
+    if (NA_MIJLPALEN[i].d === d) hit = NA_MIJLPALEN[i];
+    if (!next && NA_MIJLPALEN[i].d > d) next = NA_MIJLPALEN[i];
+  }
+  q('v-dagen').textContent = d;
+  q('v-bedrag').textContent = euro(d * p);
+  var b = q('v-badge');
+  b.textContent = hit ? 'Mijlpaal \u00b7 ' + hit.l : '84 dagen voltooid';
+  b.classList.toggle('mijl', !!hit);
+  q('v-tekst').textContent = hit ? hit.t : '';
+  q('v-tekst').classList.toggle('hide', !hit);
+  q('v-next').textContent = next ? next.l + ' \u2014 nog ' + (next.d - d) + (next.d - d === 1 ? ' dag' : ' dagen') : 'Elke dag komt er een bij';
+  var s = startISO();
+  q('v-sinds').textContent = s ? 'Rookvrij sinds ' + new Date(s).toLocaleDateString('nl-BE',{day:'numeric',month:'long',year:'numeric'}) : '';
+  toon('s-vrij');
+}
+function renderKomt(){
+  var d = dag(), p = ppd(), i, m;
+  var behaald = { l:'84 dagen', d:84 }, next = null, open = [], jaren = [];
+  for (i=0;i<NA_MIJLPALEN.length;i++){
+    m = NA_MIJLPALEN[i];
+    if (m.d <= d) behaald = m;
+    if (!next && m.d > d) next = m;
+  }
+  for (i=0;i<NA_MIJLPALEN.length;i++){
+    m = NA_MIJLPALEN[i];
+    if (JAREN.indexOf(m.l) >= 0) jaren.push(m);
+    else if (next && m.d > next.d && open.length < 4) open.push(m);
+  }
+  q('k-sub').textContent = 'Dag ' + d;
+  q('k-bnaam').textContent = behaald.l;
+  q('k-bbedrag').textContent = euro(behaald.d * p);
+  q('k-nnaam').textContent = next ? next.l : '\u2014';
+  q('k-nrest').textContent = next ? 'nog ' + (next.d - d) + (next.d - d === 1 ? ' dag' : ' dagen') : '';
+  q('k-nbedrag').textContent = next ? euro(next.d * p) : '';
+  var h = '';
+  for (i=0;i<open.length;i++) h += '<div class="tlr"><div class="dot open"></div><div class="in"><div class="n">' + open[i].l + '</div><div class="e">' + euro(open[i].d * p) + '</div></div></div>';
+  q('k-open').innerHTML = h;
+  h = '';
+  for (i=0;i<jaren.length;i++) h += '<div class="tegel"><b>' + jaren[i].l + '</b><span>' + euro(jaren[i].d * p) + '</span></div>';
+  q('k-tegels').innerHTML = h;
+  toon('s-komt');
+}
+var helpT = null, rest = 300;
+function openHelp(){
+  rest = 300; vulBuddy(); tik();
+  q('help').classList.add('on');
+  clearInterval(helpT);
+  helpT = setInterval(function(){ rest--; if (rest <= 0){ clearInterval(helpT); rest = 0; } tik(); }, 1000);
+}
+function tik(){
+  q('h-klok').textContent = Math.floor(rest/60) + ':' + String(rest % 60).padStart(2,'0');
+  q('h-bar').style.width = (rest/300*100) + '%';
+  q('h-klabel').innerHTML = rest > 0 ? 'zolang duurt<br>een craving' : 'de craving is<br>voorbij';
+}
+function sluitHelp(){ clearInterval(helpT); stopAdem(); q('help').classList.remove('on'); }
+function telNr(t){ return String(t||'').replace(/[^0-9+]/g,''); }
+function telIntl(t){
+  var x = telNr(t);
+  if (x.charAt(0) === '+') return x.slice(1);
+  if (x.slice(0,2) === '00') return x.slice(2);
+  if (x.charAt(0) === '0') return '32' + x.slice(1);
+  return x;
+}
+function vulBuddy(){
+  var n = localStorage.getItem('azg_buddy_naam') || '', t = localStorage.getItem('azg_buddy_tel') || '';
+  var heeft = !!telNr(t);
+  q('h-buddy').classList.toggle('hide', !heeft);
+  q('h-bset').classList.toggle('hide', heeft);
+  if (!heeft) return;
+  q('h-bel').href = 'tel:' + telNr(t);
+  q('h-bellabel').textContent = n ? 'Bel ' + n : 'Bel mijn buddy';
+  q('h-wa').href = 'https://wa.me/' + telIntl(t) + '?text=' + encodeURIComponent('Hey' + (n ? ' ' + n : '') + ', ik heb nu zin in een sigaret. Kan je even met me praten?');
+}
+function bewaarBuddy(){
+  var t = q('i-bstel').value.trim();
+  if (!t) { q('i-bstel').focus(); return; }
+  localStorage.setItem('azg_buddy_naam', q('i-bsnaam').value.trim());
+  localStorage.setItem('azg_buddy_tel', t);
+  vulBuddy();
+}
+var FASES = [{l:'Adem in',s:4,sc:1.06},{l:'Houd vast',s:7,sc:1.06},{l:'Adem uit',s:8,sc:.72}];
+var ademT = null;
+function startAdem(){
+  clearInterval(ademT);
+  var fase = 0, ronde = 0, rest2 = FASES[0].s;
+  function zet(){
+    var f = FASES[fase];
+    q('a-fase').textContent = f.l;
+    q('a-tel').textContent = rest2;
+    q('a-ronde').textContent = 'Ronde ' + (ronde+1) + ' van 4';
+    var bol = q('a-bol');
+    bol.style.transitionDuration = f.s + 's';
+    bol.style.transform = 'scale(' + f.sc + ')';
+  }
+  q('adem').classList.add('on');
+  zet();
+  ademT = setInterval(function(){
+    rest2--;
+    if (rest2 > 0){ q('a-tel').textContent = rest2; return; }
+    fase++;
+    if (fase >= FASES.length){ fase = 0; ronde++; }
+    if (ronde >= 4){
+      clearInterval(ademT);
+      q('a-fase').textContent = 'Goed gedaan.';
+      q('a-ronde').textContent = 'De drang is gezakt';
+      q('a-tel').textContent = '\u2713';
+      return;
+    }
+    rest2 = FASES[fase].s; zet();
+  }, 1000);
+}
+function stopAdem(){ clearInterval(ademT); q('adem').classList.remove('on'); }
+window.addEventListener('load', function(){
+  route();
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(function(){});
+});
+
+</script>
+</body>
+</html>
