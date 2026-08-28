@@ -3,6 +3,10 @@
 Rookvrij is geen app uit de app store. Je scant de QR-code, zet de app op je
 beginscherm en daarna opent hij als een gewone app, ook zonder internet.
 
+Adres: **https://vdammario-wq.github.io/AZGroeningeROOKSTOP/**
+
+![QR-code naar de app](qr-rookvrij.png)
+
 ## Installeren op Android (Chrome of Samsung Internet)
 
 1. Scan de QR-code met de camera en open de link.

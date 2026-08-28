@@ -121,6 +121,14 @@ input:focus{outline:none;border-color:var(--ink);background:#fff}
 .bset div{font:400 13px/1.55 Figtree,sans-serif;color:#fff}
 .bset input{border:none;background:rgba(255,255,255,.94)}
 .bset button{background:var(--oker);color:var(--okerd);border:none;border-radius:11px;padding:13px;font:600 14.5px Figtree,sans-serif}
+.bset button.hannuleer{flex:none;background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:11px;padding:13px 16px;font:600 14.5px Figtree,sans-serif;cursor:pointer}
+.hwijzig{align-self:flex-start;background:none;border:none;padding:2px 0;font:500 12.5px Figtree,sans-serif;color:rgba(255,255,255,.72);text-decoration:underline;cursor:pointer}
+.hlijst{border-top:1px solid rgba(255,255,255,.2);margin-top:20px;padding-top:18px;display:flex;flex-direction:column;gap:13px;flex:none}
+.hlijst-lbl{font:500 11px Figtree,sans-serif;letter-spacing:1.3px;text-transform:uppercase;color:var(--oker)}
+.hitem{display:flex;gap:11px;align-items:flex-start}
+.hitem i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--oker);margin-top:6px}
+.hitem b{display:block;font:600 13.5px Figtree,sans-serif;color:#fff}
+.hitem s{display:block;text-decoration:none;font:400 12.5px/1.5 Figtree,sans-serif;color:rgba(255,255,255,.78);margin-top:2px}
 .tabak{font:400 12.5px/1.5 Figtree,sans-serif;color:rgba(255,255,255,.85);margin-bottom:12px}
 .tabak a{color:#fff;border-bottom:1px solid rgba(255,255,255,.55);text-decoration:none}
 .sluit{width:100%;background:#fff;color:var(--bordeaux);border:none;border-radius:14px;padding:17px;font:600 16px Figtree,sans-serif}
@@ -263,13 +271,23 @@ input:focus{outline:none;border-color:var(--ink);background:#fff}
 <div class="acties hide" id="h-buddy" style="margin-top:0">
 <a class="actie" id="h-bel" href="#"><span><b id="h-bellabel">Bel mijn buddy</b><s>Je buddy</s></span><span class="pijl">→</span></a>
 <a class="actie" id="h-wa" href="#" target="_blank" rel="noopener"><span><b>Stuur een WhatsApp</b><s>Je bericht staat al klaar</s></span><span class="pijl">→</span></a>
+<button class="hwijzig" onclick="toonBuddyForm()">Buddy wijzigen</button>
 </div>
 <div class="bset hide" id="h-bset">
-<div>Je hebt nog geen buddy. Vul in wie je mag bellen — dit blijft op je eigen gsm.</div>
+<div id="h-bset-lbl">Je hebt nog geen buddy. Vul in wie je mag bellen — dit blijft op je eigen gsm.</div>
 <input id="i-bsnaam" type="text" placeholder="Naam" />
 <input id="i-bstel" type="tel" inputmode="tel" placeholder="Telefoonnummer" />
-<button onclick="bewaarBuddy()">Bewaar mijn buddy</button>
+<div style="display:flex;gap:9px">
+<button style="flex:1" onclick="bewaarBuddy()">Bewaar mijn buddy</button>
+<button class="hannuleer hide" id="h-annuleer" onclick="vulBuddy()">Annuleren</button>
 </div>
+</div>
+</div>
+<div class="hlijst">
+<div class="hlijst-lbl">Doe ondertussen dit</div>
+<div class="hitem"><i></i><div><b>Drink</b><s>Een groot glas water of een koffie. Iets in je handen, iets in je mond.</s></div></div>
+<div class="hitem"><i></i><div><b>Beweeg</b><s>Sta op en ga naar buiten. Twee minuten stappen breekt de drang.</s></div></div>
+<div class="hitem"><i></i><div><b>Herinner</b><s>Kijk naar het bedrag op je teller. Dat is wat je al niet meer hebt weggegeven.</s></div></div>
 </div>
 <div style="margin-top:auto;padding-top:20px;flex:none">
 <div class="tabak">Blijft het te zwaar? Tabakstop helpt gratis: <a href="tel:080011100">0800 111 00</a></div>
@@ -643,10 +661,21 @@ function vulBuddy(){
   var heeft = !!telNr(t);
   q('h-buddy').classList.toggle('hide', !heeft);
   q('h-bset').classList.toggle('hide', heeft);
+  q('h-annuleer').classList.add('hide');
+  q('h-bset-lbl').textContent = 'Je hebt nog geen buddy. Vul in wie je mag bellen — dit blijft op je eigen gsm.';
   if (!heeft) return;
   q('h-bel').href = 'tel:' + telNr(t);
   q('h-bellabel').textContent = n ? 'Bel ' + n : 'Bel mijn buddy';
   q('h-wa').href = 'https://wa.me/' + telIntl(t) + '?text=' + encodeURIComponent('Hey' + (n ? ' ' + n : '') + ', ik heb nu zin in een sigaret. Kan je even met me praten?');
+}
+function toonBuddyForm(){
+  var n = localStorage.getItem('azg_buddy_naam') || '', t = localStorage.getItem('azg_buddy_tel') || '';
+  q('i-bsnaam').value = n; q('i-bstel').value = t;
+  q('h-buddy').classList.add('hide');
+  q('h-bset').classList.remove('hide');
+  q('h-annuleer').classList.remove('hide');
+  q('h-bset-lbl').textContent = 'Pas de naam of het nummer van je buddy aan.';
+  q('i-bsnaam').focus();
 }
 function bewaarBuddy(){
   var t = q('i-bstel').value.trim();

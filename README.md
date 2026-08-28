@@ -23,6 +23,7 @@ geen analytics.
 | `icon-192.png`, `icon-512.png` | app-icoon |
 | `LICENSE.md` | auteursrechtverklaring — alle rechten voorbehouden |
 | `HANDLEIDING.md` | korte handleiding voor gebruikers (installeren, demolinks) |
+| `qr-rookvrij.png` | QR-code naar de gepubliceerde app |
 | `.nojekyll` | zet Jekyll-verwerking op GitHub Pages uit |
 | `.gitignore` | systeembestanden buiten de repo houden |
 
