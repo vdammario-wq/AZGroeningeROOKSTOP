@@ -24,6 +24,7 @@ geen analytics.
 | `LICENSE.md` | auteursrechtverklaring — alle rechten voorbehouden |
 | `HANDLEIDING.md` | korte handleiding voor gebruikers (installeren, demolinks) |
 | `qr-rookvrij.png` | QR-code naar de gepubliceerde app |
+| `fonts/` | lettertype Figtree en de licentie ervan |
 | `.nojekyll` | zet Jekyll-verwerking op GitHub Pages uit |
 | `.gitignore` | systeembestanden buiten de repo houden |
 
@@ -96,9 +97,8 @@ anders staat de teller op 0.
 | Tekst | `#323232` |
 | Hairline | `#EAE2D6` |
 
-Font: Figtree (Google Fonts). Wil je de app volledig offline, inclusief
-letters, download dan de woff2-bestanden en vervang de `<link>` in
-`index.html` door een lokale `@font-face`.
+Font: Figtree, lokaal meegeleverd in `fonts/figtree.woff2` (SIL Open Font
+License, zie `fonts/OFL.txt`). De app laadt dus niets van Google.
 
 ## Privacy
 

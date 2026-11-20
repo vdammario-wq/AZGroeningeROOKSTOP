@@ -26,8 +26,18 @@ op één plek en verdwijnt de browserbalk.
 
 ## De eerste keer
 
-Geen account, geen login. De app vraagt wat je rookt en wat het kost — daaruit
-volgt de teller. Daarna kies je een buddy. Vanaf dan loopt dag 1 van 84.
+Geen account, geen login. De app vraagt wat je rookt en wat het kost. Daaruit
+volgt de teller. Daarna kies je een buddy en je stopdatum. De datum van vandaag
+staat al ingevuld, maar je kunt ook een datum in het verleden of later kiezen.
+Zo kan een arts of verpleegkundige de app vooraf instellen voor iemand die pas
+over enkele dagen stopt. Tot die dag telt de app af. Op de stopdag begint dag 1
+van 84.
+
+## Iets aanpassen
+
+Tik op Help!. Onder de knoppen staat Buddy wijzigen, helemaal onderaan staat
+Stopdatum aanpassen. Via het vraagteken rechtsboven lees je hoe de app werkt,
+hoe er met je gegevens wordt omgegaan en bij wie je terechtkunt met vragen.
 
 ## Kijken op een ander moment van stoppen
 
@@ -46,8 +56,11 @@ anders staat de teller op nul.
 
 ## Wat de app bewaart
 
-Vier dingen, enkel op het toestel zelf: startdatum, prijs per dag, naam en
-nummer van de buddy. Er gaat niets naar een server.
+Vier dingen, enkel op het toestel zelf: stopdatum, prijs per dag, naam en
+nummer van de buddy. Er gaat niets naar een server. De app staat op GitHub
+Pages; GitHub houdt om veiligheidsredenen de IP-adressen van bezoekers bij.
+
+Vragen over de app: mario.vandam@scribes.be
 
 ---
 
